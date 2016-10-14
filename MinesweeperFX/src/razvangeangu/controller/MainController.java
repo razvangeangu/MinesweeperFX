@@ -12,6 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
@@ -152,13 +153,24 @@ public class MainController implements Initializable {
 		        firstClick = false;
 			}
 			
-			if (square.getType() == -1) {
-				square.setIcon(square.getType());
-				endGameAndShowBombs();
-			} else if (square.getType() == 0) {
-				showNeighbours(square.getRow(), square.getColumn());
-			} else {
-				square.setIcon(square.getType());
+			if (event.getButton() == MouseButton.PRIMARY && !square.hasFlag()) {
+				if (square.getType() == -1) {
+					square.setIcon(square.getType());
+					endGameAndShowBombs();
+				} else if (square.getType() == 0) {
+					square.setIcon(-2);
+					showNeighbours(square.getRow(), square.getColumn());
+				} else {
+					square.setIcon(square.getType());
+				}
+			} else if (event.getButton() == MouseButton.SECONDARY) {
+				if (!square.hasFlag()) {
+					square.setIcon(9);
+					square.setHasFlag(true);
+				} else {
+					square.setIcon(-2);
+					square.setHasFlag(false);
+				}
 			}
 		}
 	}

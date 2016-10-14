@@ -8,14 +8,18 @@ public class CustomSquare extends Pane {
 	
 	private int type, row, column;
 	private ImageView icon;
+	private boolean hasFlag;
 
 	public CustomSquare() {
 		maxWidth(20);
 		maxHeight(20);
+
+		hasFlag = false;
 		
 		icon = new ImageView();
 		setIcon(0);
 		getChildren().add(icon);
+	
 	}
 	
 	public void setIcon(int type) {
@@ -50,6 +54,14 @@ public class CustomSquare extends Pane {
 
 	public void setColumn(int column) {
 		this.column = column;
+	}
+
+	public boolean hasFlag() {
+		return hasFlag;
+	}
+
+	public void setHasFlag(boolean hasFlag) {
+		this.hasFlag = hasFlag;
 	}
 	
 	
