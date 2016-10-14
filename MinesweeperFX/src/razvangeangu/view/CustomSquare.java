@@ -1,13 +1,12 @@
 package razvangeangu.view;
 
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 public class CustomSquare extends Pane {
 	
-	private int type;
+	private int type, row, column;
 	private ImageView icon;
 
 	public CustomSquare() {
@@ -36,4 +35,22 @@ public class CustomSquare extends Pane {
 	public int getType() {
 		return type;
 	}
+
+	public int getRow() {
+		return row;
+	}
+
+	public void setRow(int row) {
+		this.row = row;
+	}
+
+	public int getColumn() {
+		return column;
+	}
+
+	public void setColumn(int column) {
+		this.column = column;
+	}
+	
+	
 }

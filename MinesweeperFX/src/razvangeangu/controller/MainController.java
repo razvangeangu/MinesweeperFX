@@ -3,24 +3,34 @@ package razvangeangu.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.util.Duration;
 import razvangeangu.model.Board;
 import razvangeangu.view.CustomSquare;
 
 public class MainController implements Initializable {
 
-	@FXML
-	private Button restartButton;
-	@FXML
-	private GridPane boardView;
+	@FXML private Button restartButton;
+	@FXML private GridPane boardView;
+	@FXML private Label bombsLabel;
+	@FXML private Label timeLabel;
+	
 	private Board board;
+	private Integer timeSeconds;
+	private Timeline timeline;
+	private static boolean firstClick = true;
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		try {
@@ -29,8 +39,21 @@ public class MainController implements Initializable {
 			System.err.println(e.toString());
 		}
 
-		setBoard(8, 8, 64 / 3);
+		setBoard(8, 8, 10);
 		setBoardView();
+		bombsLabel.setText("10");
+        timeSeconds = 0;
+ 
+        // update timerLabel
+        timeline = new Timeline();
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(1), new EventHandler() {
+					@Override
+					public void handle(Event event) {
+                        timeSeconds++;
+                        timeLabel.setText(convertSecToTime(timeSeconds));
+					}
+                }));
 		
 		restartButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -39,6 +62,9 @@ public class MainController implements Initializable {
 				board.resetBoard();
 				boardView.getChildren().clear();
 				setBoardView();
+				timeline.pause();
+				firstClick = true;
+				timeLabel.setText(convertSecToTime(0));
 			}
 			
 		});
@@ -73,11 +99,14 @@ public class MainController implements Initializable {
 			CustomSquare square = new CustomSquare();
 			square.setType(board.getBoard()[rowIndex][i]);
 			square.getIcon().setOnMouseClicked(new ImageHandler(square));
+			square.setRow(rowIndex);
+			square.setColumn(i);
 			gridPane.add(square, i, rowIndex);
 		}
 	}
 
 	private void endGameAndShowBombs() {
+		timeline.stop();
 		for (Node square : boardView.getChildren()) {
 			if (square instanceof CustomSquare) {
 				((CustomSquare) square).getIcon().setOnMouseClicked(null);
@@ -88,13 +117,29 @@ public class MainController implements Initializable {
 		}
 	}
 	
-	private void showNeighbours() {
-		// TODO: mai tarziu..
+	private void showNeighbours(int row, int column) {
+		
+	}
+	
+	/**
+	 * A method to convert the time from seconds to a String time stamp in the format mm:ss.
+	 * @param sec The amount of seconds to be converted to a String time stamp.
+	 * @return A String that represents the current time in the format mm:ss.
+	 */
+	public String convertSecToTime(int sec) {
+		String time = "";
+		
+		int minutes = (sec % 3600) / 60;
+		int seconds = sec % 60;
+
+		time = String.format("%02d:%02d", minutes, seconds);
+		
+		return time;
 	}
 	
 	private class ImageHandler implements EventHandler<MouseEvent> {
 		
-		CustomSquare square;
+		private CustomSquare square;
 		
 		public ImageHandler(CustomSquare square) {
 			this.square = square;
@@ -102,12 +147,16 @@ public class MainController implements Initializable {
 
 		@Override
 		public void handle(MouseEvent event) {
+			if (firstClick) {
+		        timeline.playFromStart();
+		        firstClick = false;
+			}
+			
 			if (square.getType() == -1) {
 				square.setIcon(square.getType());
 				endGameAndShowBombs();
 			} else if (square.getType() == 0) {
-				square.setIcon(-2);
-				showNeighbours();
+				showNeighbours(square.getRow(), square.getColumn());
 			} else {
 				square.setIcon(square.getType());
 			}

@@ -68,20 +68,20 @@ public class Board {
 		return board;
 	}
 	
-//	public static void main(String[] args) {
-//		try {
-//			Board board = new Board(8, 8);
-//			int[][] myBoard = board.getBoard();
-//			for (int i = 0; i < 8; i++) {
-//				for (int j = 0; j < 8; j++) {
-//					System.out.print(myBoard[i][j] + " ");
-//				}
-//				System.out.println();
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+	public static void main(String[] args) {
+		try {
+			Board board = new Board(8, 8);
+			int[][] myBoard = board.getBoard();
+			for (int i = 0; i < 8; i++) {
+				for (int j = 0; j < 8; j++) {
+					System.out.print(myBoard[i][j] + " ");
+				}
+				System.out.println();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public int getRows() {
 		return rows;

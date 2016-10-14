@@ -48,21 +48,21 @@
             </MenuBar>
             <HBox prefHeight="37.0" prefWidth="200.0">
                <children>
-                  <Label text="00:00">
+                  <Label fx:id="bombsLabel" prefWidth="40.0" text="00:00">
                      <HBox.margin>
-                        <Insets left="10.0" top="10.0" />
+                        <Insets left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
                   </Label>
-                  <Pane HBox.hgrow="ALWAYS" />
+                  <Pane prefWidth="5.0" HBox.hgrow="ALWAYS" />
                   <Button fx:id="restartButton" mnemonicParsing="false" text="" textAlignment="CENTER">
                      <HBox.margin>
                         <Insets top="5.0" />
                      </HBox.margin>
                   </Button>
-                  <Pane HBox.hgrow="ALWAYS" />
-                  <Label text="00:00">
+                  <Pane prefWidth="5.0" HBox.hgrow="ALWAYS" />
+                  <Label fx:id="timeLabel" prefWidth="40.0" text="00:00">
                      <HBox.margin>
-                        <Insets right="10.0" top="10.0" />
+                        <Insets left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
                   </Label>
                </children>
