@@ -67,14 +67,17 @@ public class MainController implements Initializable {
 			}
         }));
         
-        startGame(8, 8, 10);
+        startGame(8, 8, 10, false);
 	}
 
-	private void startGame(int rows, int columns, int bombs) {
+	private void startGame(int rows, int columns, int bombs, boolean handler) {
 		boardView.getChildren().clear();
 		timeline.pause();
 		
-		setBoardViewSize(rows, columns);
+		if (handler) {
+			setBoardViewSize(rows, columns);
+		}
+		
 		setBoard(rows, columns, bombs);
 		
 		bombsLabel.setText(Integer.toString(board.getBombs()));
@@ -84,38 +87,39 @@ public class MainController implements Initializable {
 	}
 	
 	private void setBoardViewSize(int rows, int columns) {
-		System.err.println(stage);
+			stage.setWidth(columns * 20 + 10);
+			stage.setHeight(rows * 20 + 92);
 	}
 
 	private void setUpMenuItemsAndButtons() {
 		newGameMenuItem.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				startGame(board.getRows(), board.getColumns(), board.getBombs());
+				startGame(board.getRows(), board.getColumns(), board.getBombs(), true);
 			}
 		});
 		restartButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				startGame(board.getRows(), board.getColumns(), board.getBombs());
+				startGame(board.getRows(), board.getColumns(), board.getBombs(), true);
 			}
 		});
 		beginnerMenuItem.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				startGame(8, 8, 10);
+				startGame(8, 8, 10, true);
 			}
 		});
 		intermediateMenuItem.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				startGame(16, 16, 40);
+				startGame(16, 16, 40, true);
 			}
 		});
 		expertMenuItem.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				startGame(16, 31, 99);
+				startGame(16, 31, 99, true);
 			}
 		});
 	}
@@ -181,7 +185,7 @@ public class MainController implements Initializable {
 	     if (row + 1 < board.getRows()) {
 	    	 // Go down...
 	    	 CustomSquare square = ((CustomSquare)boardView.getChildren().get((row + 1) * board.getColumns() + column));
-	    	 if (square.getType() > -1) {
+	    	 if (square.getType() > -1 && !square.getTypeDescription().equals("flag")) {
 	    		 if (square.getType() == 0) {
 	    			 if (!square.getTypeDescription().equals("free")) {
 	    				 square.setIcon(-2);
@@ -197,7 +201,7 @@ public class MainController implements Initializable {
 	     if (row - 1 >= 0) {
 	    	 // Go up...
 	    	 CustomSquare square = ((CustomSquare)boardView.getChildren().get((row - 1) * board.getColumns() + column));
-	    	 if (square.getType() > -1) {
+	    	 if (square.getType() > -1 && !square.getTypeDescription().equals("flag")) {
 	    		 if (square.getType() == 0) {
 	    			 if (!square.getTypeDescription().equals("free")) {
 	    				 square.setIcon(-2);
@@ -213,7 +217,7 @@ public class MainController implements Initializable {
 	     if (column + 1 < board.getColumns()) {
 	    	 // Go right...
 	    	 CustomSquare square = ((CustomSquare)boardView.getChildren().get(row * board.getColumns() + column + 1));
-	    	 if (square.getType() > -1) {
+	    	 if (square.getType() > -1 && !square.getTypeDescription().equals("flag")) {
 	    		 if (square.getType() == 0) {
 	    			 if (!square.getTypeDescription().equals("free")) {
 	    			 	square.setIcon(-2);
@@ -229,7 +233,7 @@ public class MainController implements Initializable {
 	     if (column - 1 >= 0) {
 	    	 // Go left...
 	    	 CustomSquare square = ((CustomSquare)boardView.getChildren().get(row * board.getColumns() + column - 1));
-	    	 if (square.getType() > -1) {
+	    	 if (square.getType() > -1 && !square.getTypeDescription().equals("flag")) {
 	    		 if (square.getType() == 0) {
 	    			 if (!square.getTypeDescription().equals("free")) {
 		    			 square.setIcon(-2);
@@ -292,9 +296,11 @@ public class MainController implements Initializable {
 					if (!square.hasFlag()) {
 						square.setIcon(9);
 						square.setHasFlag(true);
+						square.setTypeDescription("flag");
 					} else {
 						square.setIcon(0);
 						square.setHasFlag(false);
+						square.setTypeDescription("undisclosed");
 					}
 				}
 			}

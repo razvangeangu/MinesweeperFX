@@ -91,4 +91,8 @@ public class CustomSquare extends Pane {
 	public String getTypeDescription() {
 		return typeDescription;
 	}
+
+	public void setTypeDescription(String typeDescription) {
+		this.typeDescription = typeDescription;
+	}
 }
