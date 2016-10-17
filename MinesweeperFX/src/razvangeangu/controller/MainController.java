@@ -1,16 +1,22 @@
 package razvangeangu.controller;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -21,6 +27,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import razvangeangu.model.Board;
 import razvangeangu.view.CustomSquare;
+import razvangeangu.view.GlobalView;
 
 public class MainController implements Initializable {
 
@@ -44,6 +51,7 @@ public class MainController implements Initializable {
 	private static boolean firstClick = true;
 	
 	private Stage stage;
+	private GlobalView global;
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
@@ -66,6 +74,8 @@ public class MainController implements Initializable {
                 timeLabel.setText(convertSecToTime(timeSeconds));
 			}
         }));
+        
+        global = new GlobalView();
         
         startGame(8, 8, 10, false);
 	}
@@ -120,6 +130,40 @@ public class MainController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				startGame(16, 31, 99, true);
+			}
+		});
+		customGameMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				ArrayList<String> fields = new ArrayList<String>();
+				fields.add("Rows"); fields.add("Columns"); fields.add("Bombs");
+				ArrayList<String> results = global.showTextInputDialog("Custom setup", "You can choose this this and this..", fields);
+				
+				if (results != null) {
+					startGame(Integer.parseInt(results.get(0)), Integer.parseInt(results.get(1)), Integer.parseInt(results.get(2)), true);
+				}
+			}
+		});
+		personalBestMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				global.showErrorDialog("Personal Best", "Your personal best score is the following:", "123", null, AlertType.INFORMATION);
+			}
+		});	
+		championshipMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				try {
+					Desktop.getDesktop().browse(new URL("http://www.minesweeper.info/worldranking.html").toURI());
+				} catch (IOException | URISyntaxException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		exitMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				Platform.exit();
 			}
 		});
 	}
