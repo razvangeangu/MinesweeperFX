@@ -49,12 +49,12 @@ public class MainController implements Initializable {
         timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(1), new EventHandler() {
-					@Override
-					public void handle(Event event) {
-                        timeSeconds++;
-                        timeLabel.setText(convertSecToTime(timeSeconds));
-					}
-                }));
+			@Override
+			public void handle(Event event) {
+                timeSeconds++;
+                timeLabel.setText(convertSecToTime(timeSeconds));
+			}
+        }));
 		
 		restartButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -118,8 +118,77 @@ public class MainController implements Initializable {
 		}
 	}
 	
+	/**
+	 * Lee algorithm implemented to disclose any neighbour which is a free space
+	 * or it is the first number found in the search. 
+	 * @param row The initial row of the free space.
+	 * @param column The initial column of the free space.
+	 * @author Razvan-Gabriel Geangu, Tania-Laura Copocean
+	 */
 	private void showNeighbours(int row, int column) {
-		
+	     // First check for boundaries...
+	     if (row + 1 < board.getRows()) {
+	    	 // Go down...
+	    	 CustomSquare square = ((CustomSquare)boardView.getChildren().get((row + 1) * board.getColumns() + column));
+	    	 if (square.getType() > -1) {
+	    		 if (square.getType() == 0) {
+	    			 if (!square.getTypeDescription().equals("free")) {
+	    				 square.setIcon(-2);
+	    			 	showNeighbours(row + 1, column);
+	    			 }
+	    		 } else {
+	    			 square.setIcon(square.getType());
+	    		 }
+	    	 }
+	     }
+	     
+	     // First check for boundaries...
+	     if (row - 1 >= 0) {
+	    	 // Go up...
+	    	 CustomSquare square = ((CustomSquare)boardView.getChildren().get((row - 1) * board.getColumns() + column));
+	    	 if (square.getType() > -1) {
+	    		 if (square.getType() == 0) {
+	    			 if (!square.getTypeDescription().equals("free")) {
+	    				 square.setIcon(-2);
+		    			 showNeighbours(row - 1, column);
+	    			 }
+	    		 } else {
+	    			 square.setIcon(square.getType());
+	    		 }
+	    	 }
+	     }
+	     
+	     // First check for boundaries...
+	     if (column + 1 < board.getColumns()) {
+	    	 // Go right...
+	    	 CustomSquare square = ((CustomSquare)boardView.getChildren().get(row * board.getColumns() + column + 1));
+	    	 if (square.getType() > -1) {
+	    		 if (square.getType() == 0) {
+	    			 if (!square.getTypeDescription().equals("free")) {
+	    			 	square.setIcon(-2);
+	    			 	showNeighbours(row, column + 1);
+	    			 }
+	    		 } else {
+	    			 square.setIcon(square.getType());
+	    		 }
+	    	 }
+	     }
+	     
+	     // First check for boundaries...
+	     if (column - 1 >= 0) {
+	    	 // Go left...
+	    	 CustomSquare square = ((CustomSquare)boardView.getChildren().get(row * board.getColumns() + column - 1));
+	    	 if (square.getType() > -1) {
+	    		 if (square.getType() == 0) {
+	    			 if (!square.getTypeDescription().equals("free")) {
+		    			 square.setIcon(-2);
+		    			 showNeighbours(row, column -1);
+	    			 }
+	    		 } else {
+	    			 square.setIcon(square.getType());
+	    		 }
+	    	 }
+	     }
 	}
 	
 	/**
@@ -164,12 +233,14 @@ public class MainController implements Initializable {
 					square.setIcon(square.getType());
 				}
 			} else if (event.getButton() == MouseButton.SECONDARY) {
-				if (!square.hasFlag()) {
-					square.setIcon(9);
-					square.setHasFlag(true);
-				} else {
-					square.setIcon(-2);
-					square.setHasFlag(false);
+				if (square.getTypeDescription().equals("undisclosed") || square.getTypeDescription().equals("flag")) {
+					if (!square.hasFlag()) {
+						square.setIcon(9);
+						square.setHasFlag(true);
+					} else {
+						square.setIcon(0);
+						square.setHasFlag(false);
+					}
 				}
 			}
 		}
