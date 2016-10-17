@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -12,9 +13,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import razvangeangu.model.Board;
 import razvangeangu.view.CustomSquare;
@@ -26,10 +29,21 @@ public class MainController implements Initializable {
 	@FXML private Label bombsLabel;
 	@FXML private Label timeLabel;
 	
+	@FXML private MenuItem newGameMenuItem;
+	@FXML private MenuItem beginnerMenuItem;
+	@FXML private MenuItem intermediateMenuItem;
+	@FXML private MenuItem expertMenuItem;
+	@FXML private MenuItem customGameMenuItem;
+	@FXML private MenuItem personalBestMenuItem;
+	@FXML private MenuItem championshipMenuItem;
+	@FXML private MenuItem exitMenuItem;
+	
 	private Board board;
 	private Integer timeSeconds;
 	private Timeline timeline;
 	private static boolean firstClick = true;
+	
+	private Stage stage;
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
@@ -39,11 +53,8 @@ public class MainController implements Initializable {
 		} catch (Exception e) {
 			System.err.println(e.toString());
 		}
-
-		setBoard(8, 8, 10);
-		setBoardView();
-		bombsLabel.setText("10");
-        timeSeconds = 0;
+		
+		setUpMenuItemsAndButtons();
  
         // update timerLabel
         timeline = new Timeline();
@@ -55,38 +66,75 @@ public class MainController implements Initializable {
                 timeLabel.setText(convertSecToTime(timeSeconds));
 			}
         }));
-		
-		restartButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        
+        startGame(8, 8, 10);
+	}
 
+	private void startGame(int rows, int columns, int bombs) {
+		boardView.getChildren().clear();
+		timeline.pause();
+		
+		setBoardViewSize(rows, columns);
+		setBoard(rows, columns, bombs);
+		
+		bombsLabel.setText(Integer.toString(board.getBombs()));
+        timeSeconds = 0;
+        firstClick = true;
+		timeLabel.setText(convertSecToTime(0));
+	}
+	
+	private void setBoardViewSize(int rows, int columns) {
+		System.err.println(stage);
+	}
+
+	private void setUpMenuItemsAndButtons() {
+		newGameMenuItem.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
-			public void handle(MouseEvent event) {
-				board.resetBoard();
-				boardView.getChildren().clear();
-				setBoardView();
-				timeline.pause();
-				firstClick = true;
-				timeLabel.setText(convertSecToTime(0));
+			public void handle(ActionEvent event) {
+				startGame(board.getRows(), board.getColumns(), board.getBombs());
 			}
-			
+		});
+		restartButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				startGame(board.getRows(), board.getColumns(), board.getBombs());
+			}
+		});
+		beginnerMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				startGame(8, 8, 10);
+			}
+		});
+		intermediateMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				startGame(16, 16, 40);
+			}
+		});
+		expertMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				startGame(16, 31, 99);
+			}
 		});
 	}
-
+	
 	private void setBoard(int rows, int columns, int bombs) {
-		board.setRows(rows);
-		board.setColumns(columns);
-		board.setBombs(bombs);
-		board.resetBoard();
-	}
-
-	private void setBoardView() {
-		for (int i = 0; i < 8; i++) {
-			addNewRow(boardView, i);
+		board.resetBoard(rows, columns, bombs);
+		
+		for (int i = 0; i < board.getRows(); i++) {
+			addNewRow(i, board.getColumns());
 		}
 	}
 
-	private void addNewRow(GridPane gridPane, int rowIndex) {
+	/**
+	 * Add a new row to the gridPane at the index provided.
+	 * @param rowIndex The index where the row is to be added.
+	 */
+	private void addNewRow(int rowIndex, int numColumns) {
 		int numRows = 1;
-		for (Node node : gridPane.getChildren()) {
+		for (Node node : boardView.getChildren()) {
 			int currentRow = GridPane.getRowIndex(node);
 			if (currentRow >= rowIndex) {
 				GridPane.setRowIndex(node, currentRow + 1);
@@ -96,16 +144,19 @@ public class MainController implements Initializable {
 			}
 		}
 
-		for (int i = 0; i < board.getColumns(); i++) {
+		for (int i = 0; i < numColumns; i++) {
 			CustomSquare square = new CustomSquare();
 			square.setType(board.getBoard()[rowIndex][i]);
 			square.getIcon().setOnMouseClicked(new ImageHandler(square));
 			square.setRow(rowIndex);
 			square.setColumn(i);
-			gridPane.add(square, i, rowIndex);
+			boardView.add(square, i, rowIndex);
 		}
 	}
 
+	/**
+	 * A method that is used to show every bomb on the boardView when one was found.
+	 */
 	private void endGameAndShowBombs() {
 		timeline.stop();
 		for (Node square : boardView.getChildren()) {
@@ -205,6 +256,10 @@ public class MainController implements Initializable {
 		time = String.format("%02d:%02d", minutes, seconds);
 		
 		return time;
+	}
+	
+	public void setStage(Stage stage) {
+		this.stage = stage;
 	}
 	
 	private class ImageHandler implements EventHandler<MouseEvent> {

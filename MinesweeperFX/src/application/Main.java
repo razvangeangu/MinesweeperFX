@@ -4,12 +4,14 @@ import java.io.IOException;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Stage;
+import razvangeangu.controller.MainController;
 
 
 public class Main extends Application {
+	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -17,8 +19,8 @@ public class Main extends Application {
 			Parent root;
 			root = (Parent) fxmlLoader.load();
 			Scene scene = new Scene(root);
-			primaryStage.setTitle("Minesweeper 2.0");
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			primaryStage.setTitle("Minesweeper 2.0");
 			primaryStage.setScene(scene);
 			primaryStage.setMinWidth(170);
 			primaryStage.setMinHeight(250);
@@ -32,7 +34,7 @@ public class Main extends Application {
 	//	        }
 	//	    });
 			
-	//		((MainViewController) fxmlLoader.getController()).setHostServices(getHostServices());
+			((MainController) fxmlLoader.getController()).setStage(primaryStage);
 			
 			primaryStage.show();
 

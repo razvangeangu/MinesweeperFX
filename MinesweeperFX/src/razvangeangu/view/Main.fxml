@@ -18,17 +18,17 @@
               <menus>
                 <Menu mnemonicParsing="false" style="-fx-font-size: 10.5; -fx-color: #000000;" text="Game">
                   <items>
-                    <MenuItem mnemonicParsing="false" style="-fx-color: #ffffff;" text="New" />
+                    <MenuItem fx:id="newGameMenuItem" mnemonicParsing="false" style="-fx-color: #ffffff;" text="New" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" style="-fx-color: #ffffff;" text="Beginner" />
-                        <MenuItem mnemonicParsing="false" style="-fx-color: #ffffff;" text="Intermediate" />
-                        <MenuItem mnemonicParsing="false" style="-fx-color: #ffffff;" text="Expert" />
-                        <MenuItem mnemonicParsing="false" style="-fx-color: #ffffff;" text="Custom" />
+                        <MenuItem fx:id="beginnerMenuItem" mnemonicParsing="false" style="-fx-color: #ffffff;" text="Beginner" />
+                        <MenuItem fx:id="intermediateMenuItem" mnemonicParsing="false" style="-fx-color: #ffffff;" text="Intermediate" />
+                        <MenuItem fx:id="expertMenuItem" mnemonicParsing="false" style="-fx-color: #ffffff;" text="Expert" />
+                        <MenuItem fx:id="customGameMenuItem" mnemonicParsing="false" style="-fx-color: #ffffff;" text="Custom" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" style="-fx-color: #ffffff;" text="Personal Best" />
-                        <MenuItem mnemonicParsing="false" style="-fx-color: #ffffff;" text="World Champs" />
+                        <MenuItem fx:id="personalBestMenuItem" mnemonicParsing="false" style="-fx-color: #ffffff;" text="Personal Best" />
+                        <MenuItem fx:id="championshipMenuItem" mnemonicParsing="false" style="-fx-color: #ffffff;" text="World Champs" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" style="-fx-color: #ffffff;" text="Exit" />
+                        <MenuItem fx:id="exitMenuItem" mnemonicParsing="false" style="-fx-color: #ffffff;" text="Exit" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" style="-fx-font-size: 10.5; -fx-color: #000000;" text="Help">

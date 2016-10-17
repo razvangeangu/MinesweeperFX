@@ -43,7 +43,12 @@ public class Board {
 		}
 	}
 	
-	public void resetBoard() {
+	public void resetBoard(int rows, int columns, int bombs) {
+		board = new int[rows][columns];
+		this.rows = rows;
+		this.columns = columns;
+		this.bombs = bombs;
+		
 		for (int r = 0; r < rows; ++r) {
 			for (int c = 0; c < columns; ++c) {
 				board[r][c] = 0;
