@@ -33,9 +33,9 @@
                 </Menu>
                 <Menu mnemonicParsing="false" style="-fx-font-size: 10.5; -fx-color: #000000;" text="Help">
                   <items>
-                        <MenuItem mnemonicParsing="false" style="-fx-color: #ffffff;" text="Instructions" />
+                        <MenuItem fx:id="instructionsMenuItem" mnemonicParsing="false" style="-fx-color: #ffffff;" text="Instructions" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                    <MenuItem mnemonicParsing="false" style="-fx-color: #ffffff;" text="About" />
+                    <MenuItem fx:id="aboutMenuItem" mnemonicParsing="false" style="-fx-color: #ffffff;" text="About" />
                   </items>
                 </Menu>
               </menus>

@@ -120,13 +120,13 @@ public class GlobalView {
 	}
 	
 	/**
-	 * A method to show an error dialog.
+	 * A method to show a dialog.
 	 * @param title The title of the dialog.
 	 * @param header The header of the dialog
 	 * @param content The content of the dialog.
 	 * @param details The details of the dialog.
 	 */
-	public void showErrorDialog(String title, String header, String content, String details, AlertType alertType) {
+	public void showDialog(String title, String header, String content, String details, AlertType alertType) {
 		Alert alert = new Alert(alertType);
 		alert.setTitle(title);
 		alert.setHeaderText(header);
