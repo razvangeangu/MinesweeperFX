@@ -603,6 +603,8 @@ public class MainController implements Initializable {
 						
 						// Check if beats the best score
 						board.checkBestScoreAndChangeIt();
+						
+						global.showDialog("End game", "You just won the game", "Your score: " + board.getCurrentTime(), null, AlertType.CONFIRMATION);
 					}
 				}
 			

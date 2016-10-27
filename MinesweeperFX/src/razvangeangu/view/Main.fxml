@@ -57,7 +57,7 @@
                      </effect>
                   </Label>
                   <Pane prefWidth="5.0" HBox.hgrow="ALWAYS" />
-                  <Button fx:id="restartButton" mnemonicParsing="false" text="☺" textAlignment="CENTER">
+                  <Button fx:id="restartButton" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" style="-fx-background-color: #332505;" text="☺" textAlignment="CENTER" textFill="WHITE">
                      <HBox.margin>
                         <Insets top="5.0" />
                      </HBox.margin>
