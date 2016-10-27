@@ -4,6 +4,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
+/**
+ * A class that represent a custom square within the GridPane.
+ * @author Razvan-Gabriel Geangu
+ *
+ */
 public class CustomSquare extends Pane {
 	
 	private int type, row, column;

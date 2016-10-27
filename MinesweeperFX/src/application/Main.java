@@ -9,7 +9,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import razvangeangu.controller.MainController;
 
-
+/**
+ * 
+ * @author Razvan-Gabriel Geangu
+ *
+ */
 public class Main extends Application {
 	
 	@Override
@@ -25,14 +29,6 @@ public class Main extends Application {
 			primaryStage.setMinWidth(170);
 			primaryStage.setMinHeight(250);
 			primaryStage.setResizable(false);
-			
-	//		scene.getWindow().setOnCloseRequest(new EventHandler<WindowEvent>() {
-	//	        public void handle(WindowEvent ev) {
-	//	            if (!((MainViewController) fxmlLoader.getController()).shutdown()) {
-	//	                ev.consume();
-	//	            }
-	//	        }
-	//	    });
 			
 			((MainController) fxmlLoader.getController()).setStage(primaryStage);
 			

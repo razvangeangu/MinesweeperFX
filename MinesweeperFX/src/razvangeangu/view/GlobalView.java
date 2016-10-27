@@ -3,21 +3,30 @@ package razvangeangu.view;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import razvangeangu.model.GlobalModel;
 
+/**
+ * 
+ * @author Razvan-Gabriel Geangu
+ *
+ */
 public class GlobalView {
 	
 	public GlobalView() {
@@ -159,6 +168,106 @@ public class GlobalView {
 		}
 		
 		alert.showAndWait();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void showChoiceDialog(String title, String header, String content, ArrayList<String> scores) {
+		List<String> choices = new ArrayList<>();
+		choices.add(GlobalModel.BESTSCORE_EASY);
+		choices.add(GlobalModel.BESTSCORE_MEDIUM);
+		choices.add(GlobalModel.BESTSCORE_HARD);
+		choices.add(GlobalModel.BESTSCORE_CUSTOM);
+
+		// Create the custom dialog.
+		Dialog<String> dialog = new Dialog<>();
+		dialog.setTitle(title);
+		dialog.setHeaderText(header);
+
+		// Set the button types.
+		ButtonType okButtonType = new ButtonType("OK", ButtonData.OK_DONE);
+		dialog.getDialogPane().getButtonTypes().addAll(okButtonType);
+
+		GridPane grid = new GridPane();
+		grid.setHgap(10);
+		grid.setVgap(10);
+		grid.setPadding(new Insets(20, 150, 10, 10));
+
+		Label scoreLabel = new Label("");
+		
+		@SuppressWarnings("rawtypes")
+		ChoiceBox gameMode = new ChoiceBox(FXCollections.observableArrayList(choices));
+		
+		gameMode.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			int index = 0;
+			
+			switch ((String)newValue) {
+				case GlobalModel.BESTSCORE_EASY: {
+					index = 0;
+					break;
+				}
+				
+				case GlobalModel.BESTSCORE_MEDIUM: {
+					index = 1;
+					break;
+				}
+				
+				case GlobalModel.BESTSCORE_HARD: {
+					index = 2;
+					break;
+				}
+				
+				case GlobalModel.BESTSCORE_CUSTOM: {
+					index = 3;
+					break;
+				}
+			}
+			
+			if (Double.valueOf(scores.get(index)) != Double.MAX_VALUE) {
+				scoreLabel.setText(scores.get(index));
+			} else {
+				scoreLabel.setText("Not yet available");
+			}
+		});
+		
+		gameMode.getSelectionModel().select(0);
+
+		grid.add(new Label("Game mode:"), 0, 0);
+		grid.add(gameMode, 1, 0);
+		grid.add(new Label("Score:"), 0, 1);
+		grid.add(scoreLabel, 1, 1);
+
+		dialog.getDialogPane().setContent(grid);
+		
+		dialog.showAndWait();
+	}
+	
+	public int getIconType(String typeDescription) {
+		int type = 0;
+		
+		switch (typeDescription) {
+	        case "free": {
+	        	type = -2;
+	        	break;
+	        }
+	        case "bomb": {
+	        	type = -1;
+	        	break;
+	        }
+	        case "undisclosed": {
+	        	type = 0;
+	        	break;
+	        }
+	        case "flag": {
+	        	type = 9;
+	        	break;
+	        }
+	        default: {
+	        	type = Integer.valueOf(typeDescription);
+	        	break;
+	        }
+		}
+		
+		return type;
 	}
 
 }

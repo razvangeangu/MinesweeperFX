@@ -31,6 +31,12 @@
                         <MenuItem fx:id="exitMenuItem" mnemonicParsing="false" style="-fx-color: #ffffff;" text="Exit" />
                   </items>
                 </Menu>
+                  <Menu mnemonicParsing="false" style="-fx-font-size: 10.5; -fx-color: #000000;" text="Edit">
+                     <items>
+                        <MenuItem fx:id="undoMenuItem" disable="true" mnemonicParsing="false" style="-fx-color: #ffffff;" text="Undo" />
+                        <MenuItem fx:id="redoMenuItem" disable="true" mnemonicParsing="false" style="-fx-color: #ffffff;" text="Redo" />
+                     </items>
+                  </Menu>
                 <Menu mnemonicParsing="false" style="-fx-font-size: 10.5; -fx-color: #000000;" text="Help">
                   <items>
                         <MenuItem fx:id="instructionsMenuItem" mnemonicParsing="false" style="-fx-color: #ffffff;" text="Instructions" />
